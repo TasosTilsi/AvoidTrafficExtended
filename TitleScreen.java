@@ -24,11 +24,11 @@ public class TitleScreen extends World
     {
         Label.BG_COLOR = Color.YELLOW;
         Label titleLabel = new Label(TITLE,32);
-        addObject(titleLabel, 200, 100);
+        addObject(titleLabel, 200, 70);
 
         Label.BG_COLOR = new Color(0,0,0,0);
         Label descLabel = new Label(DESCRIPTION,25);
-        addObject(descLabel, 200, 150);
+        addObject(descLabel, 200, 120);
 
         Label.BG_COLOR = Color.WHITE;
         Label w = new Label(" w ",26);
@@ -53,14 +53,34 @@ public class TitleScreen extends World
         addObject(s, 300, 215);
         addObject(a, 265, 215);
         addObject(d, 335, 215);
+        
+        Label space = new Label("  space  ",26);
+        Label escape = new Label(" esc ",26);
+        addObject(space, 80, 280);
+        addObject(escape, 80, 310);
+        
+        Label.BG_COLOR = new Color(0,0,0,0);
+        Label label = new Label("Answer Phone Call",25);
+        addObject(label, 250, 280);
+        
+        Label.BG_COLOR = new Color(0,0,0,0);
+        label = new Label("Ignore/Close Phone Call",25);
+        addObject(label, 250, 310);
+        
+        Label.BG_COLOR = Color.WHITE;
+        Label b = new Label(" b ",26);
+        addObject(b, 80, 340);
+        Label.BG_COLOR = new Color(0,0,0,0);
+        label = new Label("SeatBelt On/Off",25);
+        addObject(label, 250, 340);
 
         Label.BG_COLOR = Color.GREEN;
         Label playButton = new Label(BUTTON1_TEXT,32);
-        addObject(playButton, 200, 400);
+        addObject(playButton, 200, 450);
 
         Label.BG_COLOR = Color.ORANGE;
         playButton = new Label(BUTTON2_TEXT,32);
-        addObject(playButton, 200, 450);
+        addObject(playButton, 200, 500);
     }
 
     public void act(){

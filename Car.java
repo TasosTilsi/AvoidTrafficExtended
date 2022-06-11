@@ -2,15 +2,16 @@ import greenfoot.*;
 
 public class Car extends Actor
 { 
-    TheStreet street;
-    GreenfootSound clingFX = new GreenfootSound("cling.wav");
-    boolean crashed=false;
+    private TheStreet street;
+    private GreenfootSound clingFX = new GreenfootSound("cling.wav");
+    private boolean crashed=false;
     public void act() 
     {   
         street = (TheStreet) getWorld();
         moveCar();
         checkCollision();
         changeCar();
+        caughtByPolice();
     }    
 
     private void moveCar(){
@@ -24,9 +25,8 @@ public class Car extends Actor
 
     private void checkCollision()
     {
-        crashWithBike();
-
         if(isTouching(Traffic.class)){
+            crashedWithoutSeatBelt();
             crashedWithSpeedOver50();
             if(!crashed){
                 if (street.isPowerUp()){
@@ -53,6 +53,8 @@ public class Car extends Actor
             street.addScore(3);
             clingFX.play();
         }
+
+        crashWithBike();
     }
 
     private void crashWithBike(){
@@ -68,6 +70,24 @@ public class Car extends Actor
             crashed = true;
         }
 
+    }
+
+    private void crashedWithoutSeatBelt(){
+        if (!SeatBelt.getSeatBeltStatus()){
+            street.gameOver("You didn't wore your \nSeat Belt"); 
+            crashed = true;
+        }
+
+    }
+
+    private void caughtByPolice(){
+        if(street.getObjects(PoliceTraffic.class).size() > 0){
+            if(Phone.getInstance().phoneStatus.equals("Answered") || 
+            !SeatBelt.getSeatBeltStatus()){
+                street.gameOver("You got caught by Police\n while using Phone\n"+
+                "or without wear seatbelt!!!");
+            }
+        }
     }
 
     private void changeCar(){

@@ -35,7 +35,11 @@ public class ScoreBoard extends Actor
      */
     public ScoreBoard(String message, int score)
     {
-        makeImage("Game Over", message, "Your Score: ",score);
+        makeImage("Game Over", message, "\n\nYour Score: ",score);
+    }
+    
+    public void act(){
+        
     }
 
     /**

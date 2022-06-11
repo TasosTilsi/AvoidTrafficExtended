@@ -14,6 +14,10 @@ public class Traffic extends SmoothMover
         {
             getWorld().removeObject(this); 
             street.addScore(1);
+            //System.out.println("Phone = "+ Phone.getInstance().phoneStatus+ " ="+Phone.getInstance().scoreAffected());
+            street.addScore(Phone.getInstance().scoreAffected());
+            //System.out.println("Belt = "+ SeatBelt.getSeatBeltStatus()+ " ="+SeatBelt.affectedScore);
+            street.addScore(SeatBelt.affectedScore);
         }else if(isTouching(Traffic.class)){
             getWorld().removeObject(this);   
         }

@@ -2,23 +2,25 @@ import greenfoot.*;
 
 public class TheStreet extends World
 {
-    int speed = 10;
-    int score = 0;
-    int km=0;
-    int m=0;
-    GreenfootSound rumFX = new GreenfootSound("rum.wav");
-    GreenfootSound crashFX = new GreenfootSound("crash.wav");
-    boolean powerUp=false;
-    int countPowerUp=0;
-    int trafficChooser=0;
+    private int speed = 10;
+    private int score = 0;
+    private int km=0;
+    private int m=0;
+    public GreenfootSound rumFX = new GreenfootSound("rum.wav");
+    private GreenfootSound crashFX = new GreenfootSound("crash.wav");
+
+    private boolean powerUp=false;
+    public int countPowerUp=0;
+    private int trafficChooser=0;
+
     public TheStreet()
     {    
-        super(400, 600, 1); 
+        super(400, 600, 1);
         prepare();
         displayScore();
         displayKm();
         displayVelocity();
-    }    
+    }
 
     public void started(){
         rumFX.playLoop();   
@@ -34,6 +36,7 @@ public class TheStreet extends World
         addTraffic();
         displayVelocity();
         addPowerUp();
+        phoneRing();
         checkEP();
         rumFX.playLoop();
     }
@@ -60,6 +63,8 @@ public class TheStreet extends World
         addObject(new Trees(),330, 540);
         addObject(new Grass(),70, 540);
         addObject(new Car(),250,550);
+        addObject(new SeatBelt(),330,500);
+
     } 
 
     private void keyPressed(){
@@ -77,7 +82,7 @@ public class TheStreet extends World
                 //System.out.println(e);
             }
         }else{
-
+            scoreBelowZero();
             updateSpeed();
 
         }
@@ -104,12 +109,12 @@ public class TheStreet extends World
                 break;
             case 2: 
                 traffic = new BikeTraffic();
+                trafficChooser++;
+                break;
+            case 3: 
+                traffic = new PoliceTraffic();
                 trafficChooser=0;
                 break;
-                //case 3: 
-                //traffic = new Person();
-                //trafficChooser=0;
-                //break;
             default:
                 traffic = new CarTraffic();
                 trafficChooser++;
@@ -119,7 +124,7 @@ public class TheStreet extends World
     }
 
     private void displayScore(){
-        showText("Score "+score, 45, 20);
+        showText("Score "+score, 55, 20);
     }
 
     public void addScore(int points){
@@ -128,7 +133,7 @@ public class TheStreet extends World
     }
 
     private void displayKm(){
-        showText("Km "+km, 340, 20);    
+        showText("Km "+km, 340, 20);
     }
 
     public void addMts(){
@@ -136,32 +141,32 @@ public class TheStreet extends World
         if(m==1000){
             m=0;
             km++;
-            displayKm();    
+            displayKm();
         }
     }
 
     private void displayVelocity(){
         int velocity=getSpeed()*10;
-        showText("Velocity ",350, 100); 
+        showText("Velocity ",350, 100);
         showText(+velocity+" Km/h",350,130);
     }
 
     public void setPowerUp(boolean powerUp){
-        this.powerUp=powerUp;    
+        this.powerUp=powerUp;
     }
 
     public boolean isPowerUp(){
-        return powerUp;    
+        return powerUp;
     }
 
     private void addPowerUp(){
         if(Greenfoot.getRandomNumber(1000)==1){
-            addObject(new PowerUp(),Greenfoot.getRandomNumber(160)+120,0);    
+            addObject(new PowerUp(),Greenfoot.getRandomNumber(160)+120,0);
         }
     }
 
     public void countPowerUp(){
-        countPowerUp++;    
+        countPowerUp++;
     }
 
     private void checkEP(){
@@ -172,10 +177,16 @@ public class TheStreet extends World
     }
 
     public void gameOver(String message){
+        removeObjects(getObjects(ScoreBoard.class));
         addObject(new ScoreBoard(message,score), getWidth()/2, getHeight()/2);
         crashFX.play();
         Greenfoot.stop();
-        //System.out.println("Game Over \n" + message);
+    }
+
+    public void scoreBelowZero(){
+        if (score<0){
+            gameOver("Your score is below zero!!!");
+        }
     }
 
     public void updateSpeed(){
@@ -201,5 +212,24 @@ public class TheStreet extends World
         }else{
             speed=10;
         }
+    }
+
+    private void phoneRing(){
+        //System.out.println(Phone.getInstance().phoneStatus);
+        if(Phone.getInstance().phoneStatus.equals("Closed")){
+            if(Greenfoot.getRandomNumber(1000)==1){
+                addObject(Phone.getInstance(),70,540);
+                Phone.getInstance().phoneStatus="Ringing";
+            }
+        }
+
+    }
+
+    public int getMeters(){
+        return m;
+    }
+
+    public int getKiloMeters(){
+        return km;
     }
 }
